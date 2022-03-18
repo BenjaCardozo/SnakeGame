@@ -26,7 +26,7 @@ public class SnakeWindow extends JFrame {
 
     public SnakeWindow() {
 
-        setTitle("Snake");
+        setTitle("Snake Game");
 
         setSize(widht, height);
 
@@ -105,7 +105,32 @@ public class SnakeWindow extends JFrame {
                         if (snake.y > height) {
                             snake.y = 0;
                         }
+                    } else if (direccion == KeyEvent.VK_DOWN){
+                        snake.y = snake.y + heightPoint;
+                        if (snake.y < 0) {
+                            snake.y = height - heightPoint;
+                        }
+                        if (snake.y > height) {
+                            snake.y = 0;
+                        }
+                    } else if (direccion == KeyEvent.VK_LEFT){
+                        snake.x = snake.x - widhtPoint;
+                        if (snake.x < 0) {
+                            snake.x = widht - widhtPoint;
+                        }
+                        if (snake.x > widht) {
+                            snake.x = 0;
+                        }
+                    } else if (direccion == KeyEvent.VK_RIGHT){
+                        snake.x = snake.x + widhtPoint;
+                        if (snake.x < 0) {
+                            snake.x = widht - widhtPoint;
+                        }
+                        if (snake.x > widht) {
+                            snake.x = 0;
+                        }
                     }
+                    
                     
                     actualizar();
                     last = java.lang.System.currentTimeMillis();
