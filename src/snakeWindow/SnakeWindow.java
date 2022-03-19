@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class SnakeWindow extends JFrame {
 
-    int widht = 1360;
+    int widht = 1024;
     int height = 768;
 
     Point snake;
@@ -70,23 +70,17 @@ public class SnakeWindow extends JFrame {
     public void crearComida() {
         Random r1 = new Random();
 
-        comida.x = r1.nextInt(widht);
-        comida.y = r1.nextInt(widht);
+        comida.x = r1.nextInt(widht-15);
+        comida.y = r1.nextInt(height-15);
 
         if ((comida.x % 5) > 0) {
             comida.x = comida.x - (comida.x % 5);
-        }
-
-        if (comida.x < 5) {
-            comida.x = comida.x + 10;
-        }
-
-        if ((comida.y % 5) > 0) {
+        } else if (comida.x < 5) {
+            comida.x = comida.x - 10;
+        } else if ((comida.y % 5) > 0) {
             comida.y = comida.y - (comida.y % 5);
-        }
-
-        if (comida.y < 5) {
-            comida.y = comida.y + 10;
+        } else if (comida.y < 5) {
+            comida.y = comida.y - 10;
         }
     }
 
