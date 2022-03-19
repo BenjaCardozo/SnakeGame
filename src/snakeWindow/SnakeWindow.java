@@ -7,20 +7,26 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.*;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JPanel;
 
 public class SnakeWindow extends JFrame {
 
-    int widht = 640;
-    int height = 480;
+    int widht = 1360;
+    int height = 768;
 
     Point snake;
+    Point comida;
+
+    Arraylist<Point> lista;
+    
     int widhtPoint = 10;
     int heightPoint = 10;
 
     int direccion = KeyEvent.VK_LEFT;
 
-    long frecuencia = 20;
+    long frecuencia = 30;
 
     Imagen imagenSnake = new Imagen();
 
@@ -38,20 +44,54 @@ public class SnakeWindow extends JFrame {
         SnakeKeys teclas = new SnakeKeys();
         this.addKeyListener(teclas);
 
-        snake = new Point(widht / 2, height / 2);
+        pointSnake();
 
         imagenSnake = new Imagen();
         this.getContentPane().add(imagenSnake);
-        
+
         setVisible(true);
-        
+
         Momento momento = new Momento();
         Thread trid = new Thread(momento);
         trid.start();
     }
 
+    public void pointSnake() {
+        comida = new Point(200, 200);
+        snake = new Point(widht / 2, height / 2);
+        
+        lista = new ArrayList<Point>();
+        crearComida();
+    }
+
+    public void crearComida() {
+        Random r1 = new Random();
+
+        comida.x = r1.nextInt(widht);
+
+        if ((comida.x % 5) > 0) {
+            comida.x = comida.x - (comida.x % 5);
+        }
+
+        if (comida.x < 5) {
+            comida.x = comida.x + 10;
+        }
+
+        if ((comida.y % 5) > 0) {
+            comida.y = comida.y - (comida.y % 5);
+        }
+
+        if (comida.y < 5) {
+            comida.y = comida.y + 10;
+        }
+    }
+
     public void actualizar() {
         imagenSnake.repaint();
+
+        if ((snake.x > (comida.x - 10)) && (snake.x < (comida.x + 10)) && (snake.y > (comida.y - 10)) && (snake.y < (comida.y + 10))) {
+            crearComida();
+        }
     }
 
     public class Imagen extends JPanel {
@@ -61,6 +101,9 @@ public class SnakeWindow extends JFrame {
             super.paintComponent(g);
             g.setColor(new Color(0, 0, 225));
             g.fillRect(snake.x, snake.y, widhtPoint, heightPoint);
+
+            g.setColor(new Color(255, 0, 0));
+            g.fillRect(comida.x, comida.y, widhtPoint, heightPoint);
         }
 
     }
@@ -93,6 +136,7 @@ public class SnakeWindow extends JFrame {
     public class Momento extends Thread {
 
         long last = 0;
+
         public void run() {
             while (true) {
                 if ((java.lang.System.currentTimeMillis() - last) > frecuencia) {
@@ -105,7 +149,7 @@ public class SnakeWindow extends JFrame {
                         if (snake.y > height) {
                             snake.y = 0;
                         }
-                    } else if (direccion == KeyEvent.VK_DOWN){
+                    } else if (direccion == KeyEvent.VK_DOWN) {
                         snake.y = snake.y + heightPoint;
                         if (snake.y < 0) {
                             snake.y = height - heightPoint;
@@ -113,7 +157,7 @@ public class SnakeWindow extends JFrame {
                         if (snake.y > height) {
                             snake.y = 0;
                         }
-                    } else if (direccion == KeyEvent.VK_LEFT){
+                    } else if (direccion == KeyEvent.VK_LEFT) {
                         snake.x = snake.x - widhtPoint;
                         if (snake.x < 0) {
                             snake.x = widht - widhtPoint;
@@ -121,7 +165,7 @@ public class SnakeWindow extends JFrame {
                         if (snake.x > widht) {
                             snake.x = 0;
                         }
-                    } else if (direccion == KeyEvent.VK_RIGHT){
+                    } else if (direccion == KeyEvent.VK_RIGHT) {
                         snake.x = snake.x + widhtPoint;
                         if (snake.x < 0) {
                             snake.x = widht - widhtPoint;
@@ -130,8 +174,7 @@ public class SnakeWindow extends JFrame {
                             snake.x = 0;
                         }
                     }
-                    
-                    
+
                     actualizar();
                     last = java.lang.System.currentTimeMillis();
                 }
