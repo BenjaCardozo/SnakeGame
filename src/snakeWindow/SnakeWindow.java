@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 
 public class SnakeWindow extends JFrame {
 
-    int widht = 1024;
-    int height = 768;
+    int widht = 800;
+    int height = 600;
 
     Point snake;
     Point comida;
@@ -28,7 +28,7 @@ public class SnakeWindow extends JFrame {
 
     int direccion = KeyEvent.VK_LEFT;
 
-    long frecuencia = 30;
+    long frecuencia = 40;
 
     Imagen imagenSnake = new Imagen();
 
@@ -70,8 +70,8 @@ public class SnakeWindow extends JFrame {
     public void crearComida() {
         Random r1 = new Random();
 
-        comida.x = r1.nextInt(widht-15);
-        comida.y = r1.nextInt(height-15);
+        comida.x = r1.nextInt(widht - 100);
+        comida.y = r1.nextInt(height - 100);
 
         if ((comida.x % 5) > 0) {
             comida.x = comida.x - (comida.x % 5);
@@ -117,8 +117,8 @@ public class SnakeWindow extends JFrame {
 
             g.setColor(new Color(255, 0, 0));
             g.fillRect(comida.x, comida.y, widhtPoint, heightPoint);
-            
-            if(gameOver){
+
+            if (gameOver) {
                 g.drawString("Game Over!!", 200, 320);
             }
         }
